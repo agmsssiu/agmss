@@ -1,0 +1,1146 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AGMSS — Premium Web Architect</title>
+
+    <!-- Preconnect to improve font loading performance -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
+    <script src="https://unpkg.com/lucide@latest"></script>
+
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        gold: {
+                            50: '#fdf9ef', 100: '#f5e6c8', 200: '#e8d5a3',
+                            300: '#d4b978', 400: '#c9a96e', 500: '#b8924a',
+                            600: '#a07d3a', 700: '#856630', 800: '#6b5028', 900: '#503c1e',
+                        },
+                        dark: {
+                            50: '#1a1a1a', 100: '#141414', 200: '#111111',
+                            300: '#0d0d0d', 400: '#0a0a0a', 500: '#080808',
+                            600: '#050505', 700: '#030303', 800: '#020202', 900: '#000000',
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300;1,400&family=DM+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700&display=swap" rel="stylesheet">
+
+    <style>
+        /* ===== BASE & TYPOGRAPHY ===== */
+        * { font-family: 'DM Sans', sans-serif; }
+        .font-serif { font-family: 'Cormorant Garamond', serif !important; }
+
+        /* ===== GOLD GRADIENT TEXT & BG ===== */
+        .gradient-gold { background: linear-gradient(135deg, #c9a96e, #e8d5a3, #c9a96e); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; }
+        .gradient-gold-bg { background: linear-gradient(135deg, #c9a96e, #b8924a); }
+
+        /* ===== REVEAL ANIMATIONS (GSAP + Fallback) ===== */
+        .reveal {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: opacity 1.2s cubic-bezier(0.16, 1, 0.3, 1),
+                        transform 1.2s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+        .reveal.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* Respect reduced motion */
+        @media (prefers-reduced-motion: reduce) {
+            .reveal { transition: none; opacity: 1; transform: none; }
+            .particle { display: none !important; }
+        }
+
+        /* ===== LUXURY CARD & GLASS PANELS ===== */
+        .glass-panel {
+            background: rgba(10, 10, 10, 0.45);
+            backdrop-filter: blur(24px);
+            -webkit-backdrop-filter: blur(24px);
+            border: 1px solid rgba(201, 169, 110, 0.04);
+            transition: all 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+        .glass-panel:hover {
+            border-color: rgba(201, 169, 110, 0.12);
+            background: rgba(14, 14, 14, 0.6);
+            transform: translateY(-4px);
+            box-shadow: 0 20px 40px rgba(201, 169, 110, 0.03);
+        }
+
+        .luxury-card {
+            transition: transform 0.5s cubic-bezier(0.16, 1, 0.3, 1),
+                        box-shadow 0.5s cubic-bezier(0.16, 1, 0.3, 1),
+                        border-color 0.5s ease;
+        }
+        .luxury-card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 20px 60px rgba(201, 169, 110, 0.06);
+            border-color: rgba(201, 169, 110, 0.2);
+        }
+
+        /* ===== NAVBAR SCROLLED STATE ===== */
+        .navbar-scrolled {
+            background: rgba(5, 5, 5, 0.92) !important;
+            backdrop-filter: blur(24px) saturate(180%);
+            -webkit-backdrop-filter: blur(24px) saturate(180%);
+            border-bottom: 1px solid rgba(201, 169, 110, 0.06);
+        }
+
+        /* ===== GOLD LINE DECORATOR ===== */
+        .gold-line {
+            width: 60px;
+            height: 1px;
+            background: linear-gradient(90deg, #c9a96e, transparent);
+        }
+
+        /* ===== BUTTON SHINE EFFECT ===== */
+        .btn-shine {
+            position: relative;
+            overflow: hidden;
+        }
+        .btn-shine::after {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -100%;
+            width: 40%;
+            height: 200%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.12), transparent);
+            transform: skewX(-15deg);
+            transition: left 0.6s ease;
+        }
+        .btn-shine:hover::after {
+            left: 120%;
+        }
+
+        /* ===== LUXURY DIVIDER ===== */
+        .luxury-divider {
+            height: 1px;
+            background: linear-gradient(90deg, transparent, rgba(201, 169, 110, 0.08), transparent);
+        }
+
+        /* ===== PROJECT IMAGE HOVER ===== */
+        .project-image {
+            transition: transform 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+        .project-card:hover .project-image {
+            transform: scale(1.05);
+        }
+
+        /* ===== SELECTION + FOCUS VISIBLE ===== */
+        ::selection {
+            background: rgba(201, 169, 110, 0.25);
+            color: #fff;
+        }
+        :focus-visible {
+            outline: 2px solid #c9a96e;
+            outline-offset: 3px;
+            border-radius: 10px;
+        }
+
+        /* ===== SCROLLBAR ===== */
+        ::-webkit-scrollbar { width: 6px; }
+        ::-webkit-scrollbar-track { background: #050505; }
+        ::-webkit-scrollbar-thumb {
+            background: linear-gradient(180deg, #c9a96e, #856630);
+            border-radius: 3px;
+        }
+
+        /* ===== BRAND LOGO LUXURY LOCKUP ===== */
+        .brand-lockup {
+            display: inline-flex;
+            align-items: center;
+            gap: 14px;
+            text-decoration: none;
+            position: relative;
+            isolation: isolate;
+        }
+
+        .brand-emblem {
+            width: 42px;
+            height: 42px;
+            border-radius: 50%;
+            position: relative;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            background:
+                radial-gradient(circle at 30% 25%, rgba(255,255,255,0.35), transparent 28%),
+                linear-gradient(135deg, #f5e6c8 0%, #c9a96e 45%, #856630 100%);
+            box-shadow:
+                0 0 0 1px rgba(201, 169, 110, 0.2),
+                0 12px 30px rgba(201, 169, 110, 0.1),
+                inset 0 1px 0 rgba(255,255,255,0.35);
+            transition:
+                transform 0.45s cubic-bezier(0.16, 1, 0.3, 1),
+                box-shadow 0.45s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        .brand-emblem::before {
+            content: '';
+            position: absolute;
+            inset: -5px;
+            border-radius: inherit;
+            border: 1px solid rgba(201, 169, 110, 0.15);
+            opacity: 0.8;
+            transition:
+                inset 0.45s cubic-bezier(0.16, 1, 0.3, 1),
+                opacity 0.45s ease;
+        }
+
+        .brand-emblem::after {
+            content: '';
+            position: absolute;
+            inset: 6px;
+            border-radius: inherit;
+            border: 1px solid rgba(5, 5, 5, 0.2);
+        }
+
+        .brand-initial {
+            position: relative;
+            z-index: 2;
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 25px;
+            font-weight: 600;
+            line-height: 1;
+            color: #050505;
+            transform: translateY(-1px);
+        }
+
+        .brand-copy {
+            display: flex;
+            flex-direction: column;
+            gap: 3px;
+        }
+
+        .brand-name {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 27px;
+            font-weight: 400;
+            line-height: 0.95;
+            letter-spacing: 0.24em;
+            color: #f5e6c8;
+            text-transform: uppercase;
+            transition:
+                color 0.35s ease,
+                letter-spacing 0.45s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        .brand-subtitle {
+            font-size: 8px;
+            font-weight: 500;
+            line-height: 1;
+            letter-spacing: 0.42em;
+            color: rgba(201, 169, 110, 0.5);
+            text-transform: uppercase;
+            transition: color 0.35s ease;
+        }
+
+        .brand-lockup:hover .brand-emblem {
+            transform: translateY(-2px) rotate(-4deg);
+            box-shadow:
+                0 0 0 1px rgba(201, 169, 110, 0.3),
+                0 18px 45px rgba(201, 169, 110, 0.18),
+                inset 0 1px 0 rgba(255,255,255,0.4);
+        }
+
+        .brand-lockup:hover .brand-emblem::before {
+            inset: -8px;
+            opacity: 1;
+        }
+
+        .brand-lockup:hover .brand-name {
+            color: #ffffff;
+            letter-spacing: 0.28em;
+        }
+
+        .brand-lockup:hover .brand-subtitle {
+            color: rgba(245, 230, 200, 0.85);
+        }
+
+        /* ===== INTERACTIVE SLIDER STYLING ===== */
+        input[type="range"] {
+            -webkit-appearance: none;
+            appearance: none;
+            background: rgba(201, 169, 110, 0.08);
+            height: 6px;
+            border-radius: 3px;
+            outline: none;
+        }
+        input[type="range"]::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            appearance: none;
+            width: 18px;
+            height: 18px;
+            border-radius: 50%;
+            background: #c9a96e;
+            cursor: pointer;
+            box-shadow: 0 0 12px rgba(201, 169, 110, 0.4);
+            transition: transform 0.2s, background-color 0.2s;
+        }
+        input[type="range"]::-webkit-slider-thumb:hover {
+            transform: scale(1.25);
+            background: #e8d5a3;
+        }
+
+        @media (max-width: 640px) {
+            .brand-emblem { width: 38px; height: 38px; }
+            .brand-initial { font-size: 23px; }
+            .brand-name { font-size: 23px; letter-spacing: 0.2em; }
+            .brand-subtitle { font-size: 7px; letter-spacing: 0.32em; }
+        }
+    </style>
+</head>
+
+<body class="bg-dark-600 text-white antialiased overflow-x-hidden">
+
+<!-- ========== PRELOADER COUNTDOWN ========== -->
+<div id="preloader" class="fixed inset-0 bg-[#050505] z-[9999] flex flex-col justify-between p-8 md:p-12 transition-opacity duration-1000 ease-in-out">
+    <div class="flex justify-between items-center text-[10px] uppercase tracking-[0.25em] text-gray-500">
+        <span>AGMSS Portfolio</span>
+        <span>Est. 2023</span>
+    </div>
+    <div class="text-center">
+        <h1 class="font-serif text-3xl md:text-4xl tracking-[0.35em] text-gold-300 uppercase mb-4">AGMSS</h1>
+        <div class="font-serif text-6xl md:text-9xl font-light italic text-white" id="preload-count">00</div>
+    </div>
+    <div class="flex justify-between items-end text-[10px] uppercase tracking-[0.25em] text-gray-500">
+        <span>Digital Architect</span>
+        <div class="w-24 h-[1px] bg-gold-400/10 relative overflow-hidden">
+            <div id="preload-bar" class="absolute top-0 left-0 h-full bg-gold-400 w-0 transition-all duration-[2000ms] ease-out"></div>
+        </div>
+    </div>
+</div>
+
+<!-- ========== NAVBAR ========== -->
+<nav id="navbar" class="fixed top-0 left-0 right-0 z-50 transition-all duration-500" role="navigation" aria-label="Main">
+    <div class="max-w-6xl mx-auto px-6 lg:px-8 py-5 flex items-center justify-between">
+        
+        <!-- BRAND LOCKUP -->
+        <a href="#" class="brand-lockup" aria-label="AGMSS Home">
+            <span class="brand-emblem">
+                <span class="brand-initial">A</span>
+            </span>
+            <span class="brand-copy">
+                <span class="brand-name">AGMSS</span>
+                <span class="brand-subtitle">Web Architect</span>
+            </span>
+        </a>
+
+        <!-- DESKTOP NAV -->
+        <div class="hidden md:flex items-center gap-10">
+            <a href="#about" class="text-gray-500 hover:text-gold-300 transition-colors duration-300 text-[11px] uppercase tracking-[0.2em] focus-visible">Philosophy</a>
+            <a href="#services" class="text-gray-500 hover:text-gold-300 transition-colors duration-300 text-[11px] uppercase tracking-[0.2em] focus-visible">Expertise</a>
+            <a href="#projects" class="text-gray-500 hover:text-gold-300 transition-colors duration-300 text-[11px] uppercase tracking-[0.2em] focus-visible">Exhibition</a>
+            <a href="#estimator" class="text-gray-500 hover:text-gold-300 transition-colors duration-300 text-[11px] uppercase tracking-[0.2em] focus-visible">Estimator</a>
+            <a href="#contact" class="btn-shine gradient-gold-bg text-dark-900 font-semibold px-6 py-2.5 rounded-full text-[11px] uppercase tracking-[0.15em] transition-all duration-300 hover:shadow-lg hover:shadow-gold-400/20 focus-visible">
+                Let's Talk
+            </a>
+        </div>
+
+        <!-- MOBILE MENU BUTTON -->
+        <button id="menuBtn" class="md:hidden text-gold-300 focus-visible" aria-expanded="false" aria-controls="mobileMenu" aria-label="Open menu">
+            <i data-lucide="menu" class="w-6 h-6"></i>
+        </button>
+    </div>
+
+    <!-- MOBILE MENU -->
+    <div id="mobileMenu" class="hidden md:hidden bg-dark-500/95 backdrop-blur-2xl border-t border-gold-400/10 animate-fade-in" role="menu" aria-hidden="true">
+        <div class="px-6 py-8 flex flex-col gap-6">
+            <a href="#about" class="text-gray-400 hover:text-gold-300 text-xs uppercase tracking-[0.2em] focus-visible" role="menuitem">Philosophy</a>
+            <a href="#services" class="text-gray-400 hover:text-gold-300 text-xs uppercase tracking-[0.2em] focus-visible" role="menuitem">Expertise</a>
+            <a href="#projects" class="text-gray-400 hover:text-gold-300 text-xs uppercase tracking-[0.2em] focus-visible" role="menuitem">Exhibition</a>
+            <a href="#estimator" class="text-gray-400 hover:text-gold-300 text-xs uppercase tracking-[0.2em] focus-visible" role="menuitem">Estimator</a>
+            <a href="#contact" class="gradient-gold-bg text-dark-900 font-semibold px-6 py-3.5 rounded-full text-xs text-center uppercase tracking-[0.15em] focus-visible" role="menuitem">Let's Talk</a>
+        </div>
+    </div>
+</nav>
+
+<!-- ========== HERO ========== -->
+<section class="relative min-h-screen flex items-center justify-center px-6 overflow-hidden animate-fade-in" aria-label="Hero">
+    <!-- Fluid Canvas Background -->
+    <canvas id="fluid-canvas" class="absolute inset-0 z-0 pointer-events-none opacity-50"></canvas>
+
+    <!-- Background glow decoration -->
+    <div class="absolute inset-0 pointer-events-none" aria-hidden="true">
+        <div class="absolute top-1/4 left-1/2 -translate-x-1/2 w-[600px] h-[600px] bg-gold-400/[0.02] rounded-full blur-[140px]"></div>
+        <div class="absolute bottom-0 left-0 right-0 h-32 bg-gradient-to-t from-dark-600 to-transparent"></div>
+    </div>
+
+    <div class="relative max-w-5xl mx-auto text-center z-10 mt-12">
+        <!-- Status Badge -->
+        <div class="reveal inline-flex items-center gap-3 border border-gold-400/10 rounded-full px-5 py-2 mb-10 bg-dark-400/50 backdrop-blur-sm">
+            <span class="w-1.5 h-1.5 bg-gold-400 rounded-full animate-pulse" aria-hidden="true"></span>
+            <span class="text-[10px] text-gold-200/75 uppercase tracking-[0.3em] font-medium">Custom Design & Code</span>
+        </div>
+
+        <!-- Main Heading -->
+        <h1 class="reveal font-serif text-5xl md:text-7xl lg:text-[6.5rem] font-light leading-[1.05] mb-8 tracking-tight">
+            Architecture of<br>
+            <span class="gradient-gold font-medium italic">Digital Landscapes</span>
+        </h1>
+
+        <!-- Subtitle -->
+        <p class="reveal text-sm md:text-base text-gray-500 max-w-md mx-auto mb-14 leading-relaxed tracking-wider uppercase font-light">
+            I engineer high-performance web spaces with absolute typographical hierarchy and precise layout.
+        </p>
+
+        <!-- CTA Buttons (Perfect Spacious Dimensions) -->
+        <div class="reveal flex flex-col sm:flex-row gap-6 justify-center items-center">
+            <a href="#projects" class="btn-shine gradient-gold-bg text-dark-900 font-bold px-14 py-5 md:px-16 md:py-5.5 rounded-full transition-all duration-300 text-xs uppercase tracking-[0.22em] hover:shadow-2xl hover:shadow-gold-400/35 focus-visible">
+                Explore Exhibition
+            </a>
+            <a href="#contact" class="text-gold-300 hover:text-white text-xs uppercase tracking-[0.22em] border-b border-gold-400/20 hover:border-white pb-2 transition-all duration-500 focus-visible">
+                Initiate Conversation
+            </a>
+        </div>
+    </div>
+</section>
+
+<div class="luxury-divider max-w-6xl mx-auto" aria-hidden="true"></div>
+
+<!-- ========== PHILOSOPHY (ABOUT) ========== -->
+<section id="about" class="py-36 px-6" aria-label="Philosophy">
+    <div class="max-w-6xl mx-auto">
+        <div class="grid lg:grid-cols-12 gap-16 items-start">
+            <div class="lg:col-span-5">
+                <div class="reveal">
+                    <span class="text-[10px] text-gold-400 uppercase tracking-[0.4em] block mb-6">Philosophy</span>
+                    <div class="gold-line mt-4 mb-8" aria-hidden="true"></div>
+                </div>
+                <h2 class="font-serif text-4xl md:text-5xl lg:text-6xl font-light leading-tight">
+                    Premium and<br><span class="italic gradient-gold">effortlessly clean</span><br>architectures.
+                </h2>
+            </div>
+            
+            <div class="lg:col-span-7 lg:pt-16 text-gray-400 font-light text-base md:text-lg leading-[1.8] space-y-8">
+                <p class="reveal">
+                    With over two years of custom development expertise, I build fast, production-ready interfaces. Every container, font-weight, and motion curve is placed intentionally to guide layout hierarchy.
+                </p>
+                <p class="reveal">
+                    My layout process focuses on luxury digital minimalism. By pairing technical optimization with responsive structural design, I construct premium digital platforms that look and feel world-class.
+                </p>
+
+                <!-- Attributes Grid -->
+                <div class="grid grid-cols-2 gap-5 pt-6">
+                    <div class="reveal flex items-center gap-4 p-4 rounded-2xl bg-dark-400/50 border border-white/[0.03]">
+                        <div class="w-10 h-10 rounded-xl bg-gold-400/5 flex items-center justify-center border border-gold-400/15" aria-hidden="true">
+                            <i data-lucide="zap" class="w-4 h-4 text-gold-400"></i>
+                        </div>
+                        <span class="text-xs text-gray-400 uppercase tracking-wider font-light">Rapid Speeds</span>
+                    </div>
+                    <div class="reveal flex items-center gap-4 p-4 rounded-2xl bg-dark-400/50 border border-white/[0.03]">
+                        <div class="w-10 h-10 rounded-xl bg-gold-400/5 flex items-center justify-center border border-gold-400/15" aria-hidden="true">
+                            <i data-lucide="message-square" class="w-4 h-4 text-gold-400"></i>
+                        </div>
+                        <span class="text-xs text-gray-400 uppercase tracking-wider font-light">Direct Contact</span>
+                    </div>
+                    <div class="reveal flex items-center gap-4 p-4 rounded-2xl bg-dark-400/50 border border-white/[0.03]">
+                        <div class="w-10 h-10 rounded-xl bg-gold-400/5 flex items-center justify-center border border-gold-400/15" aria-hidden="true">
+                            <i data-lucide="code-2" class="w-4 h-4 text-gold-400"></i>
+                        </div>
+                        <span class="text-xs text-gray-400 uppercase tracking-wider font-light">Accurate Code</span>
+                    </div>
+                    <div class="reveal flex items-center gap-4 p-4 rounded-2xl bg-dark-400/50 border border-white/[0.03]">
+                        <div class="w-10 h-10 rounded-xl bg-gold-400/5 flex items-center justify-center border border-gold-400/15" aria-hidden="true">
+                            <i data-lucide="maximize" class="w-4 h-4 text-gold-400"></i>
+                        </div>
+                        <span class="text-xs text-gray-400 uppercase tracking-wider font-light">Adaptive Layout</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<div class="luxury-divider max-w-6xl mx-auto" aria-hidden="true"></div>
+
+<!-- ========== EXPERTISE (SERVICES) ========== -->
+<section id="services" class="py-36 px-6" aria-label="Expertise">
+    <div class="max-w-6xl mx-auto">
+        <div class="text-center mb-24">
+            <div class="reveal">
+                <span class="text-[10px] text-gold-400 uppercase tracking-[0.4em] block mb-6">Expertise</span>
+                <div class="gold-line mx-auto mt-4 mb-8" aria-hidden="true"></div>
+            </div>
+            <h2 class="font-serif text-4xl md:text-5xl font-light">Premium Production</h2>
+            <p class="text-gray-500 text-sm mt-4 font-light max-w-md mx-auto leading-relaxed">High-performance digital components tailored with strict visual alignment.</p>
+        </div>
+
+        <div class="grid md:grid-cols-3 gap-8">
+            <div class="reveal glass-panel p-10 rounded-3xl">
+                <div class="w-10 h-10 rounded-xl bg-gold-400/5 flex items-center justify-center mb-8 border border-gold-400/10" aria-hidden="true">
+                    <i data-lucide="layers" class="w-4 h-4 text-gold-400"></i>
+                </div>
+                <h3 class="font-serif text-2xl font-light mb-4">Landing Pages</h3>
+                <p class="text-gray-500 text-sm font-light leading-relaxed">Highly aligned single-page responsive applications structured to maximize visitor actions.</p>
+            </div>
+
+            <div class="reveal glass-panel p-10 rounded-3xl">
+                <div class="w-10 h-10 rounded-xl bg-gold-400/5 flex items-center justify-center mb-8 border border-gold-400/10" aria-hidden="true">
+                    <i data-lucide="book-open" class="w-4 h-4 text-gold-400"></i>
+                </div>
+                <h3 class="font-serif text-2xl font-light mb-4">Identity Sites</h3>
+                <p class="text-gray-500 text-sm font-light leading-relaxed">Refined multi-page digital setups that establish absolute visual brand hierarchy.</p>
+            </div>
+
+            <div class="reveal glass-panel p-10 rounded-3xl">
+                <div class="w-10 h-10 rounded-xl bg-gold-400/5 flex items-center justify-center mb-8 border border-gold-400/10" aria-hidden="true">
+                    <i data-lucide="terminal" class="w-4 h-4 text-gold-400"></i>
+                </div>
+                <h3 class="font-serif text-2xl font-light mb-4">Interactive Web</h3>
+                <p class="text-gray-500 text-sm font-light leading-relaxed">Custom functional interfaces featuring lightweight scripts and custom physics layout structures.</p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<div class="luxury-divider max-w-6xl mx-auto" aria-hidden="true"></div>
+
+<!-- ========== EXHIBITION (PROJECTS) ========== -->
+<section id="projects" class="py-36 px-6" aria-label="Selected Exhibition">
+    <div class="max-w-6xl mx-auto">
+        <div class="flex flex-col md:flex-row justify-between items-start md:items-end mb-24">
+            <div>
+                <span class="text-[10px] text-gold-400 uppercase tracking-[0.4em] block mb-6">Exhibition</span>
+                <h2 class="font-serif text-4xl md:text-5xl font-light">Selected Work</h2>
+            </div>
+            <p class="text-gray-500 text-sm mt-4 md:mt-0 font-light max-w-xs leading-relaxed">A premium showcase of active code integrations designed with absolute typographic and layout standards.</p>
+        </div>
+
+        <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+            
+            <!-- Project 1: AnalyticsPro -->
+            <a href="samples/saas.html" target="_blank" class="reveal group block glass-panel p-8 rounded-3xl">
+                <div class="aspect-[1.4] bg-dark-500/50 rounded-2xl mb-8 overflow-hidden relative flex items-center justify-center border border-white/[0.02]">
+                    <div class="text-center project-image">
+                        <i data-lucide="line-chart" class="w-8 h-8 text-gold-400/40 mx-auto mb-4"></i>
+                        <span class="text-[10px] text-gray-500 uppercase tracking-[0.3em] font-light">Analytical Suite</span>
+                    </div>
+                    <div class="absolute top-6 right-6 border border-gold-400/20 px-4 py-1 rounded-full text-[9px] uppercase tracking-[0.2em] text-gold-300 bg-dark-700/85">Live Preview</div>
+                </div>
+                <div class="flex justify-between items-start">
+                    <div>
+                        <h3 class="font-serif text-2xl font-light mb-2 text-white group-hover:text-gold-300 transition-colors">AnalyticsPro</h3>
+                        <p class="text-gray-500 text-xs font-light">SaaS analytical system with optimized visualizations.</p>
+                    </div>
+                    <span class="font-serif italic text-lg text-gold-400/60">01</span>
+                </div>
+            </a>
+
+            <!-- Project 2: AURA-1 Spatial Core -->
+            <a href="samples/aura.html" target="_blank" class="reveal group block glass-panel p-8 rounded-3xl">
+                <div class="aspect-[1.4] bg-dark-500/50 rounded-2xl mb-8 overflow-hidden relative flex items-center justify-center border border-white/[0.02]">
+                    <div class="text-center project-image">
+                        <i data-lucide="aperture" class="w-8 h-8 text-gold-400/40 mx-auto mb-4"></i>
+                        <span class="text-[10px] text-gray-500 uppercase tracking-[0.3em] font-light">WebGL Core</span>
+                    </div>
+                    <div class="absolute top-6 right-6 border border-gold-400/20 px-4 py-1 rounded-full text-[9px] uppercase tracking-[0.2em] text-gold-300 bg-dark-700/85">Live 3D</div>
+                </div>
+                <div class="flex justify-between items-start">
+                    <div>
+                        <h3 class="font-serif text-2xl font-light mb-2 text-white group-hover:text-gold-300 transition-colors">AURA-1 Spatial Core</h3>
+                        <p class="text-gray-500 text-xs font-light">Interactive spatial mockups driven by physics scripting.</p>
+                    </div>
+                    <span class="font-serif italic text-lg text-gold-400/60">02</span>
+                </div>
+            </a>
+
+            <!-- Project 3: Brew & Bean -->
+            <a href="samples/coffee.html" target="_blank" class="reveal group block glass-panel p-8 rounded-3xl">
+                <div class="aspect-[1.4] bg-dark-500/50 rounded-2xl mb-8 overflow-hidden relative flex items-center justify-center border border-white/[0.02]">
+                    <div class="text-center project-image">
+                        <i data-lucide="cup-water" class="w-8 h-8 text-gold-400/40 mx-auto mb-4"></i>
+                        <span class="text-[10px] text-gray-500 uppercase tracking-[0.3em] font-light">Artisanal Space</span>
+                    </div>
+                    <div class="absolute top-6 right-6 border border-gold-400/20 px-4 py-1 rounded-full text-[9px] uppercase tracking-[0.2em] text-gold-300 bg-dark-700/85">Live Preview</div>
+                </div>
+                <div class="flex justify-between items-start">
+                    <div>
+                        <h3 class="font-serif text-2xl font-light mb-2 text-white group-hover:text-gold-300 transition-colors">Brew & Bean</h3>
+                        <p class="text-gray-500 text-xs font-light">Minimal, editorial system tailored for culinary brands.</p>
+                    </div>
+                    <span class="font-serif italic text-lg text-gold-400/60">03</span>
+                </div>
+            </a>
+
+            <!-- Project 4: LaunchPad AI -->
+            <a href="samples/startup.html" target="_blank" class="reveal group block glass-panel p-8 rounded-3xl">
+                <div class="aspect-[1.4] bg-dark-500/50 rounded-2xl mb-8 overflow-hidden relative flex items-center justify-center border border-white/[0.02]">
+                    <div class="text-center project-image">
+                        <i data-lucide="cpu" class="w-8 h-8 text-gold-400/40 mx-auto mb-4"></i>
+                        <span class="text-[10px] text-gray-500 uppercase tracking-[0.3em] font-light">AI Platform</span>
+                    </div>
+                    <div class="absolute top-6 right-6 border border-gold-400/20 px-4 py-1 rounded-full text-[9px] uppercase tracking-[0.2em] text-gold-300 bg-dark-700/85">Live Preview</div>
+                </div>
+                <div class="flex justify-between items-start">
+                    <div>
+                        <h3 class="font-serif text-2xl font-light mb-2 text-white group-hover:text-gold-300 transition-colors">LaunchPad AI</h3>
+                        <p class="text-gray-500 text-xs font-light">Highly conversion-focused framework for tech setups.</p>
+                    </div>
+                    <span class="font-serif italic text-lg text-gold-400/60">04</span>
+                </div>
+            </a>
+
+            <!-- Project 5: DevMark -->
+            <a href="samples/devmark.html" target="_blank" class="reveal group block glass-panel p-8 rounded-3xl">
+                <div class="aspect-[1.4] bg-dark-500/50 rounded-2xl mb-8 overflow-hidden relative flex items-center justify-center border border-white/[0.02]">
+                    <div class="text-center project-image">
+                        <i data-lucide="pen-tool" class="w-8 h-8 text-gold-400/40 mx-auto mb-4"></i>
+                        <span class="text-[10px] text-gray-500 uppercase tracking-[0.3em] font-light">Developer Brand</span>
+                    </div>
+                    <div class="absolute top-6 right-6 border border-gold-400/20 px-4 py-1 rounded-full text-[9px] uppercase tracking-[0.2em] text-gold-300 bg-dark-700/85">Live Preview</div>
+                </div>
+                <div class="flex justify-between items-start">
+                    <div>
+                        <h3 class="font-serif text-2xl font-light mb-2 text-white group-hover:text-gold-300 transition-colors">DevMark</h3>
+                        <p class="text-gray-500 text-xs font-light">Ultra-clean, dark mode personal editorial link board.</p>
+                    </div>
+                    <span class="font-serif italic text-lg text-gold-400/60">05</span>
+                </div>
+            </a>
+
+            <!-- Custom CTA Frame -->
+            <div class="reveal border border-dashed border-gold-400/15 rounded-3xl flex items-center justify-center p-8 bg-dark-400/30 min-h-[380px] group hover:border-gold-400/30 transition-all duration-500">
+                <div class="text-center">
+                    <div class="w-14 h-14 rounded-full bg-gold-400/[0.03] flex items-center justify-center mx-auto mb-5 group-hover:bg-gold-400/[0.08] transition-colors duration-500">
+                        <i data-lucide="plus" class="w-6 h-6 text-gold-400/60"></i>
+                    </div>
+                    <h3 class="font-serif text-2xl font-light mb-2">Your Space</h3>
+                    <p class="text-gray-500 text-sm mb-6 font-light max-w-xs">We design your visual landscape down to exact specifications.</p>
+                    <a href="#contact" class="text-gold-400 text-xs uppercase tracking-[0.2em] font-semibold hover:text-gold-300 transition-colors duration-300 focus-visible">
+                        Start Project <span class="ml-1">→</span>
+                    </a>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</section>
+
+<div class="luxury-divider max-w-6xl mx-auto" aria-hidden="true"></div>
+
+<!-- ========== PRODUCTION METHOD (PROCESS) ========== -->
+<section class="py-36 px-6" aria-label="Development Method">
+    <div class="max-w-6xl mx-auto">
+        <div class="text-center mb-24">
+            <div class="reveal">
+                <span class="text-[10px] text-gold-400 uppercase tracking-[0.4em]">Method</span>
+                <div class="gold-line mx-auto mt-4 mb-8" aria-hidden="true"></div>
+            </div>
+            <h2 class="font-serif text-4xl md:text-5xl font-light">Production Steps</h2>
+            <p class="text-gray-500 text-sm mt-4 font-light max-w-md mx-auto leading-relaxed">Direct, straightforward workflows to bring architectures from concepts to active domains.</p>
+        </div>
+
+        <div class="grid md:grid-cols-4 gap-8">
+            <div class="reveal text-center group">
+                <div class="w-16 h-16 rounded-2xl bg-dark-300 border border-gold-400/10 flex items-center justify-center mx-auto mb-6 group-hover:border-gold-400/30 transition-all duration-500" aria-hidden="true">
+                    <span class="text-gold-400/80 font-serif text-xl font-light">01</span>
+                </div>
+                <h3 class="font-serif text-xl font-medium mb-3">Discovery</h3>
+                <p class="text-gray-500 text-xs font-light leading-relaxed">Defining your core layout goals and typography profiles without agency delay.</p>
+            </div>
+
+            <div class="reveal text-center group">
+                <div class="w-16 h-16 rounded-2xl bg-dark-300 border border-gold-400/10 flex items-center justify-center mx-auto mb-6 group-hover:border-gold-400/30 transition-all duration-500" aria-hidden="true">
+                    <span class="text-gold-400/80 font-serif text-xl font-light">02</span>
+                </div>
+                <h3 class="font-serif text-xl font-medium mb-3">Layout Design</h3>
+                <p class="text-gray-500 text-xs font-light leading-relaxed">Drafting structural system variations to establish standard interface hierarchy.</p>
+            </div>
+
+            <div class="reveal text-center group">
+                <div class="w-16 h-16 rounded-2xl bg-dark-300 border border-gold-400/10 flex items-center justify-center mx-auto mb-6 group-hover:border-gold-400/30 transition-all duration-500" aria-hidden="true">
+                    <span class="text-gold-400/80 font-serif text-xl font-light">03</span>
+                </div>
+                <h3 class="font-serif text-xl font-medium mb-3">Precision Code</h3>
+                <p class="text-gray-500 text-xs font-light leading-relaxed">Structuring lightweight codebases focused entirely on asset weight optimization.</p>
+            </div>
+
+            <div class="reveal text-center group">
+                <div class="w-16 h-16 rounded-2xl bg-dark-300 border border-gold-400/10 flex items-center justify-center mx-auto mb-6 group-hover:border-gold-400/30 transition-all duration-500" aria-hidden="true">
+                    <span class="text-gold-400/80 font-serif text-xl font-light">04</span>
+                </div>
+                <h3 class="font-serif text-xl font-medium mb-3">Deployment</h3>
+                <p class="text-gray-500 text-xs font-light leading-relaxed">Global DNS setup, SSL configuration, and code compilation onto premium secure hosts.</p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<div class="luxury-divider max-w-6xl mx-auto" aria-hidden="true"></div>
+
+<!-- ========== INTERACTIVE RATE ESTIMATOR ========== -->
+<section id="estimator" class="py-36 px-6 relative" aria-label="Interactive Rate Estimator">
+    <div class="max-w-4xl mx-auto">
+        <div class="text-center mb-24">
+            <div class="reveal">
+                <span class="text-[10px] text-gold-400 uppercase tracking-[0.4em] block mb-6">Interactive</span>
+                <div class="gold-line mx-auto mt-4 mb-8" aria-hidden="true"></div>
+            </div>
+            <h2 class="font-serif text-4xl md:text-5xl font-light">Rate Estimator</h2>
+            <p class="text-gray-500 text-sm font-light mt-4">Adjust the structural slider and core add-ons below to generate an immediate scope estimate.</p>
+        </div>
+
+        <div class="reveal glass-panel p-8 md:p-12 rounded-3xl grid md:grid-cols-12 gap-12 items-center">
+            
+            <!-- Left inputs panel -->
+            <div class="md:col-span-7 space-y-8">
+                
+                <!-- Project Archetype Dropdown -->
+                <div>
+                    <label for="project-type" class="block text-xs uppercase tracking-widest text-gray-400 mb-3 font-semibold">Project Type</label>
+                    <select id="project-type" class="w-full bg-dark-500/70 border border-white/[0.08] rounded-2xl px-4 py-3 text-sm text-white focus:outline-none focus:border-gold-400/40 focus:ring-2 focus:ring-gold-400/10 transition">
+                        <option value="landing">Minimal Landing Page (Base $300)</option>
+                        <option value="business">Premium Business Portal (Base $500)</option>
+                        <option value="portfolio">Typographic Portfolio (Base $450)</option>
+                        <option value="saas">SaaS UI / Interactive Dashboard (Base $800)</option>
+                        <option value="custom">Fully Custom Interface (Base $1000)</option>
+                    </select>
+                </div>
+
+                <!-- Page Count range slider -->
+                <div>
+                    <div class="flex justify-between items-center mb-3 text-xs uppercase tracking-widest text-gray-400">
+                        <span>Structural Scope</span>
+                        <span class="text-gold-300 font-semibold" id="page-count-val">1 Page</span>
+                    </div>
+                    <input type="range" id="page-slider" min="1" max="10" value="1" class="w-full">
+                </div>
+
+                <!-- Custom styled premium toggles -->
+                <div class="space-y-4">
+                    
+                    <!-- Toggle 1: Motion Logic -->
+                    <label class="flex items-center justify-between p-4 rounded-xl bg-dark-500/40 border border-white/[0.02] hover:border-gold-400/10 transition-all cursor-pointer">
+                        <div class="flex flex-col pr-4">
+                            <span class="text-xs uppercase tracking-wider font-semibold">Motion & Fluid Animations</span>
+                            <span class="text-[10px] text-gray-500 font-light mt-0.5">High-end transitions and scroll-bound layouts</span>
+                        </div>
+                        <div class="relative flex-shrink-0">
+                            <input type="checkbox" id="motion-toggle" class="sr-only peer">
+                            <div class="w-10 h-5 bg-dark-200 rounded-full peer peer-checked:after:translate-x-full after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-gray-400 after:rounded-full after:h-4 after:w-4 after:transition-all peer-checked:bg-gold-500 relative after:transition-all"></div>
+                        </div>
+                    </label>
+
+                    <!-- Toggle 2: Premium SEO Structure -->
+                    <label class="flex items-center justify-between p-4 rounded-xl bg-dark-500/40 border border-white/[0.02] hover:border-gold-400/10 transition-all cursor-pointer">
+                        <div class="flex flex-col pr-4">
+                            <span class="text-xs uppercase tracking-wider font-semibold">Production SEO Setup</span>
+                            <span class="text-[10px] text-gray-500 font-light mt-0.5">Custom metadata architecture, sitemaps, and indexing files</span>
+                        </div>
+                        <div class="relative flex-shrink-0">
+                            <input type="checkbox" id="seo-toggle" class="sr-only peer">
+                            <div class="w-10 h-5 bg-dark-200 rounded-full peer peer-checked:after:translate-x-full after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-gray-400 after:rounded-full after:h-4 after:w-4 after:transition-all peer-checked:bg-gold-500 relative after:transition-all"></div>
+                        </div>
+                    </label>
+
+                    <!-- Toggle 3: Rush Delivery -->
+                    <label class="flex items-center justify-between p-4 rounded-xl bg-dark-500/40 border border-white/[0.02] hover:border-gold-400/10 transition-all cursor-pointer">
+                        <div class="flex flex-col pr-4">
+                            <span class="text-xs uppercase tracking-wider font-semibold">Express Delivery</span>
+                            <span class="text-[10px] text-gray-500 font-light mt-0.5">Accelerate production timeline by 50%</span>
+                        </div>
+                        <div class="relative flex-shrink-0">
+                            <input type="checkbox" id="speed-toggle" class="sr-only peer">
+                            <div class="w-10 h-5 bg-dark-200 rounded-full peer peer-checked:after:translate-x-full after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-gray-400 after:rounded-full after:h-4 after:w-4 after:transition-all peer-checked:bg-gold-500 relative after:transition-all"></div>
+                        </div>
+                    </label>
+                </div>
+            </div>
+
+            <!-- Right calculated output container -->
+            <div class="md:col-span-5 text-center md:border-l md:border-white/5 md:pl-12 flex flex-col justify-center items-center">
+                <span class="text-[10px] text-gray-500 uppercase tracking-widest block mb-2">Estimated Rate</span>
+                <div class="text-5xl md:text-6xl font-serif font-light text-gold-300 flex items-baseline gap-1" id="calculated-total">
+                    <span>$</span><span id="price-val">300</span>
+                </div>
+                <span class="text-[9px] text-gray-600 uppercase tracking-widest mt-2 block">Subject to exact scope details</span>
+                
+                <button id="copy-est-btn" class="w-full mt-8 bg-transparent hover:bg-gold-400/5 text-gold-300 border border-gold-400/20 text-[10px] font-semibold uppercase tracking-[0.2em] py-4 rounded-full transition-all duration-300">
+                    Copy Scope Summary
+                </button>
+
+                <a href="#contact" class="btn-shine w-full mt-3 bg-gold-400 hover:bg-gold-300 text-dark-700 text-[10px] font-bold uppercase tracking-[0.2em] py-4 rounded-full transition-all duration-300">
+                    Secure Project Slot
+                </a>
+            </div>
+        </div>
+    </div>
+</section>
+
+<div class="luxury-divider max-w-6xl mx-auto" aria-hidden="true"></div>
+
+<!-- ========== TECHNOLOGIES ========== -->
+<section class="py-36 px-6" aria-label="Technologies">
+    <div class="max-w-6xl mx-auto">
+        <div class="text-center mb-16">
+            <div class="reveal">
+                <span class="text-[10px] text-gold-400 uppercase tracking-[0.4em] block mb-6">Technologies</span>
+                <div class="gold-line mx-auto mt-4 mb-8" aria-hidden="true"></div>
+            </div>
+            <h2 class="font-serif text-4xl md:text-5xl font-light">Tools of the <span class="italic gradient-gold">Craft</span></h2>
+        </div>
+        <div class="reveal flex flex-wrap justify-center gap-3">
+            <div class="bg-dark-400/50 border border-white/[0.04] px-6 py-3 rounded-xl text-sm text-gray-400 hover:border-gold-400/20 hover:text-gold-300 transition-all duration-500 font-light">HTML5</div>
+            <div class="bg-dark-400/50 border border-white/[0.04] px-6 py-3 rounded-xl text-sm text-gray-400 hover:border-gold-400/20 hover:text-gold-300 transition-all duration-500 font-light">CSS3</div>
+            <div class="bg-dark-400/50 border border-white/[0.04] px-6 py-3 rounded-xl text-sm text-gray-400 hover:border-gold-400/20 hover:text-gold-300 transition-all duration-500 font-light">JavaScript</div>
+            <div class="bg-dark-400/50 border border-white/[0.04] px-6 py-3 rounded-xl text-sm text-gray-400 hover:border-gold-400/20 hover:text-gold-300 transition-all duration-500 font-light">Tailwind CSS</div>
+            <div class="bg-dark-400/50 border border-white/[0.04] px-6 py-3 rounded-xl text-sm text-gray-400 hover:border-gold-400/20 hover:text-gold-300 transition-all duration-500 font-light">GSAP</div>
+            <div class="bg-dark-400/50 border border-white/[0.04] px-6 py-3 rounded-xl text-sm text-gray-400 hover:border-gold-400/20 hover:text-gold-300 transition-all duration-500 font-light">Vercel</div>
+        </div>
+    </div>
+</section>
+
+<div class="luxury-divider max-w-6xl mx-auto" aria-hidden="true"></div>
+
+<!-- ========== CONTACT ========== -->
+<section id="contact" class="py-32 px-6" aria-label="Contact">
+    <div class="max-w-4xl mx-auto">
+        <div class="reveal relative">
+            <div class="bg-dark-300 border border-gold-400/10 rounded-3xl p-12 md:p-24 text-center relative overflow-hidden">
+                
+                <!-- WIDE LUXURY FRAME BORDER ANCHORS (Softened Contrast & Expanded Corner Size) -->
+                <div class="absolute top-0 left-0 w-24 h-24 md:w-40 md:h-40 border-t border-l border-gold-400/10 rounded-tl-3xl" aria-hidden="true"></div>
+                <div class="absolute top-0 right-0 w-24 h-24 md:w-40 md:h-40 border-t border-r border-gold-400/10 rounded-tr-3xl" aria-hidden="true"></div>
+                <div class="absolute bottom-0 left-0 w-24 h-24 md:w-40 md:h-40 border-b border-l border-gold-400/10 rounded-bl-3xl" aria-hidden="true"></div>
+                <div class="absolute bottom-0 right-0 w-24 h-24 md:w-40 md:h-40 border-b border-r border-gold-400/10 rounded-br-3xl" aria-hidden="true"></div>
+                
+                <!-- Ambient central glow -->
+                <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-80 h-80 bg-gold-400/[0.025] rounded-full blur-[100px]" aria-hidden="true"></div>
+                
+                <div class="relative z-10">
+                    <span class="text-[11px] text-gold-400 uppercase tracking-[0.3em]">Dialogue</span>
+                    <div class="gold-line mx-auto mt-4 mb-8" aria-hidden="true"></div>
+                    
+                    <h2 class="text-3xl md:text-5xl font-serif font-light mb-6">
+                        Let's Create<br><span class="italic gradient-gold">Together</span>
+                    </h2>
+                    
+                    <p class="text-gray-500 mb-12 max-w-lg mx-auto font-light leading-relaxed text-sm md:text-base">
+                        Have a digital design vision? Let's connect directly. I reply to custom architecture requests within 24 hours.
+                    </p>
+
+                    <!-- DIRECT CHANNELS (Spacious and Structurally Labeled Social Grid) -->
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-5 max-w-2xl mx-auto">
+                        
+                        <!-- Direct Email Block -->
+                        <a href="mailto:agmssaura@gmail.com" 
+                           class="glass-panel p-6 rounded-2xl flex flex-col items-center justify-center text-center group focus-visible">
+                            <div class="w-10 h-10 rounded-full bg-gold-400/5 flex items-center justify-center border border-gold-400/10 mb-3 group-hover:bg-gold-400/10 transition-all duration-300">
+                                <i data-lucide="mail" class="w-4 h-4 text-gold-400"></i>
+                            </div>
+                            <span class="text-[9px] tracking-[0.25em] text-gold-400 uppercase font-medium mb-1">Direct Email</span>
+                            <span class="text-xs text-gray-400 tracking-wider">agmssaura@gmail.com</span>
+                        </a>
+
+                        <!-- Discord Clipboard Copy Block -->
+                        <button id="discord-copy"
+                                class="glass-panel p-6 rounded-2xl flex flex-col items-center justify-center text-center group focus-visible w-full"
+                                aria-label="Copy Discord Tag">
+                            <div class="w-10 h-10 rounded-full bg-gold-400/5 flex items-center justify-center border border-gold-400/10 mb-3 group-hover:bg-gold-400/10 transition-all duration-300">
+                                <i data-lucide="message-square" class="w-4 h-4 text-gold-400"></i>
+                            </div>
+                            <span class="text-[9px] tracking-[0.25em] text-gold-400 uppercase font-medium mb-1">Discord Tag</span>
+                            <span class="text-xs text-gray-400 tracking-wider" id="discord-text">@agmssftbl</span>
+                        </button>
+
+                        <!-- Instagram Block -->
+                        <a href="https://instagram.com/agmssftbl" target="_blank" rel="noopener noreferrer"
+                           class="glass-panel p-6 rounded-2xl flex flex-col items-center justify-center text-center group focus-visible">
+                            <div class="w-10 h-10 rounded-full bg-gold-400/5 flex items-center justify-center border border-gold-400/10 mb-3 group-hover:bg-gold-400/10 transition-all duration-300">
+                                <i data-lucide="instagram" class="w-4 h-4 text-gold-400"></i>
+                            </div>
+                            <span class="text-[9px] tracking-[0.25em] text-gold-400 uppercase font-medium mb-1">Instagram</span>
+                            <span class="text-xs text-gray-400 tracking-wider">@agmssftbl</span>
+                        </a>
+
+                        <!-- Telegram Block -->
+                        <a href="https://t.me/agmssaura" target="_blank" rel="noopener noreferrer"
+                           class="glass-panel p-6 rounded-2xl flex flex-col items-center justify-center text-center group focus-visible">
+                            <div class="w-10 h-10 rounded-full bg-gold-400/5 flex items-center justify-center border border-gold-400/10 mb-3 group-hover:bg-gold-400/10 transition-all duration-300">
+                                <i data-lucide="send" class="w-4 h-4 text-gold-400"></i>
+                            </div>
+                            <span class="text-[9px] tracking-[0.25em] text-gold-400 uppercase font-medium mb-1">Telegram</span>
+                            <span class="text-xs text-gray-400 tracking-wider">@agmssaura</span>
+                        </a>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- ========== FOOTER ========== -->
+<footer class="py-16 px-6 border-t border-white/[0.03]" aria-label="Footer">
+    <div class="max-w-6xl mx-auto flex flex-col md:flex-row items-center justify-between gap-6 text-[10px] tracking-[0.2em] text-gray-600 uppercase">
+        <div class="flex items-center gap-4">
+            <span class="brand-name font-serif text-sm text-gold-300 tracking-[0.25em]">AGMSS</span>
+            <span>© 2025 ALL RIGHTS RESERVED</span>
+        </div>
+        <div class="flex gap-8">
+            <a href="#about" class="hover:text-gold-300 transition-colors focus-visible">Philosophy</a>
+            <a href="#services" class="hover:text-gold-300 transition-colors focus-visible">Expertise</a>
+            <a href="#projects" class="hover:text-gold-300 transition-colors focus-visible">Exhibition</a>
+            <a href="#contact" class="hover:text-gold-300 transition-colors focus-visible">Dialogue</a>
+        </div>
+    </div>
+</footer>
+
+<!-- ========== PRODUCTION SCRIPTS ========== -->
+<script>
+    // Initialize Lucide Vector Icons
+    lucide.createIcons();
+
+    // === PRELOADER SYSTEM ===
+    window.addEventListener('DOMContentLoaded', () => {
+        const preloader = document.getElementById('preloader');
+        const count = document.getElementById('preload-count');
+        const bar = document.getElementById('preload-bar');
+        
+        let progress = 0;
+        const interval = setInterval(() => {
+            progress += Math.floor(Math.random() * 8) + 2;
+            if (progress >= 100) {
+                progress = 100;
+                clearInterval(interval);
+                
+                gsap.to(preloader, {
+                    opacity: 0,
+                    duration: 1.2,
+                    ease: "power4.inOut",
+                    onComplete: () => preloader.style.display = 'none'
+                });
+            }
+            count.innerText = progress.toString().padStart(2, '0');
+            bar.style.width = progress + '%';
+        }, 50);
+    });
+
+    // === NAVIGATION WINDOW SCROLL STATE ===
+    const navbar = document.getElementById('navbar');
+    const updateNavbar = () => {
+        navbar.classList.toggle('navbar-scrolled', window.scrollY > 50);
+    };
+    window.addEventListener('scroll', updateNavbar, { passive: true });
+    updateNavbar();
+
+    // === MOBILE MENU INTERACTIONS ===
+    const menuBtn = document.getElementById('menuBtn');
+    const mobileMenu = document.getElementById('mobileMenu');
+    menuBtn.addEventListener('click', () => {
+        const isHidden = mobileMenu.classList.contains('hidden');
+        mobileMenu.classList.toggle('hidden');
+        menuBtn.setAttribute('aria-expanded', String(!isHidden));
+        mobileMenu.setAttribute('aria-hidden', String(isHidden));
+    });
+    mobileMenu.querySelectorAll('a').forEach(link => {
+        link.addEventListener('click', () => {
+            mobileMenu.classList.add('hidden');
+            menuBtn.setAttribute('aria-expanded', 'false');
+            mobileMenu.setAttribute('aria-hidden', 'true');
+        });
+    });
+
+    // === INTERACTIVE CANVASES FLUID PROCESSOR ===
+    const canvas = document.getElementById('fluid-canvas');
+    const ctx = canvas.getContext('2d');
+    let particles = [];
+
+    function resizeCanvas() {
+        canvas.width = window.innerWidth;
+        canvas.height = window.innerHeight;
+    }
+    window.addEventListener('resize', resizeCanvas);
+    resizeCanvas();
+
+    class GoldParticle {
+        constructor() {
+            this.x = Math.random() * canvas.width;
+            this.y = Math.random() * canvas.height;
+            this.size = Math.random() * 1.5 + 0.5;
+            this.speedX = Math.random() * 0.15 - 0.075;
+            this.speedY = Math.random() * 0.15 - 0.075;
+        }
+        update() {
+            this.x += this.speedX;
+            this.y += this.speedY;
+            if (this.x < 0 || this.x > canvas.width) this.speedX *= -1;
+            if (this.y < 0 || this.y > canvas.height) this.speedY *= -1;
+        }
+        draw() {
+            ctx.fillStyle = 'rgba(201, 169, 110, 0.09)';
+            ctx.beginPath();
+            ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+            ctx.fill();
+        }
+    }
+
+    function initParticles() {
+        particles = [];
+        const count = Math.min(60, Math.floor(window.innerWidth / 20));
+        for (let i = 0; i < count; i++) {
+            particles.push(new GoldParticle());
+        }
+    }
+    initParticles();
+
+    // Render loop
+    function render() {
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+        particles.forEach(p => { p.update(); p.draw(); });
+        requestAnimationFrame(render);
+    }
+    render();
+
+    // === GSAP REGISTER SCROLLTRIGGERS & REVEAL CLASS CO-ORDINATION ===
+    gsap.registerPlugin(ScrollTrigger);
+
+    document.querySelectorAll('.reveal').forEach(el => {
+        ScrollTrigger.create({
+            trigger: el,
+            start: "top 88%",
+            onEnter: () => el.classList.add('visible')
+        });
+    });
+
+    ScrollTrigger.create({
+        start: "top -50",
+        onUpdate: (self) => {
+            navbar.classList.toggle('navbar-scrolled', window.scrollY > 50);
+        }
+    });
+
+    // === HIGH-PERFORMANCE INTERACTIVE RATE ESTIMATOR CALCULATOR ===
+    const projectSelect = document.getElementById('project-type');
+    const pageSlider = document.getElementById('page-slider');
+    const pageVal = document.getElementById('page-count-val');
+    const motionToggle = document.getElementById('motion-toggle');
+    const seoToggle = document.getElementById('seo-toggle');
+    const speedToggle = document.getElementById('speed-toggle');
+    const priceVal = document.getElementById('price-val');
+    const copyEstBtn = document.getElementById('copy-est-btn');
+
+    function calculateRate() {
+        const archetype = projectSelect.value;
+        const pages = parseInt(pageSlider.value, 10);
+        
+        // Base value relative to Archetype Chosen
+        let baseCost = 300;
+        if (archetype === 'landing') baseCost = 300;
+        if (archetype === 'business') baseCost = 500;
+        if (archetype === 'portfolio') baseCost = 450;
+        if (archetype === 'saas') baseCost = 800;
+        if (archetype === 'custom') baseCost = 1000;
+
+        // Additional incremental Page additions
+        let pageAdditions = 0;
+        if (pages > 1) {
+            pageAdditions = (pages - 1) * 80;
+        }
+
+        // Feature sets
+        let featureAdditions = 0;
+        if (motionToggle.checked) featureAdditions += 150;
+        if (seoToggle.checked) featureAdditions += 80;
+
+        let calculatedTotal = baseCost + pageAdditions + featureAdditions;
+
+        // Urgent delivery priority markup modifier
+        if (speedToggle.checked) {
+            calculatedTotal *= 1.35; // 35% priority markup
+        }
+
+        const totalFormatted = Math.round(calculatedTotal);
+        pageVal.innerText = pages + (pages > 1 ? " Pages" : " Page");
+
+        // Premium GSAP smooth numeric counter execution
+        gsap.to(priceVal, {
+            innerText: totalFormatted,
+            duration: 0.6,
+            snap: { innerText: 1 },
+            ease: "power2.out"
+        });
+    }
+
+    // Connect event listeners
+    projectSelect.addEventListener('change', calculateRate);
+    pageSlider.addEventListener('input', calculateRate);
+    motionToggle.addEventListener('change', calculateRate);
+    seoToggle.addEventListener('change', calculateRate);
+    speedToggle.addEventListener('change', calculateRate);
+
+    // Run calculations on initial load
+    calculateRate();
+
+    // === DISCORD INSTANT CLIPBOARD COPIER ===
+    document.getElementById('discord-copy').addEventListener('click', () => {
+        navigator.clipboard.writeText('agmssftbl').then(() => {
+            const txt = document.getElementById('discord-text');
+            const originalText = txt.innerText;
+            txt.innerText = 'COPIED!';
+            txt.classList.remove('text-gray-400');
+            txt.classList.add('text-gold-300');
+            setTimeout(() => {
+                txt.innerText = originalText;
+                txt.classList.remove('text-gold-300');
+                txt.classList.add('text-gray-400');
+            }, 2000);
+        });
+    });
+
+    // === ESTIMATE COPY SUMMARY GENERATOR ===
+    copyEstBtn.addEventListener('click', () => {
+        const archetypeText = projectSelect.options[projectSelect.selectedIndex].text;
+        const pagesText = pageSlider.value;
+        const motionStatus = motionToggle.checked ? "Yes (+ $150)" : "No";
+        const seoStatus = seoToggle.checked ? "Yes (+ $80)" : "No";
+        const expressStatus = speedToggle.checked ? "Yes (+ 35%)" : "No";
+        const finalEst = priceVal.innerText;
+
+        const summaryText = 
+`AGMSS — PROJECT DESIGN SCOPE SUMMARY
+--------------------------------------------
+• Project Archetype: ${archetypeText}
+• Total Structural Scope: ${pagesText} Page(s)
+• Motion / Fluid Logic: ${motionStatus}
+• Production SEO Setup: ${seoStatus}
+• Urgent Express Delivery: ${expressStatus}
+--------------------------------------------
+ESTIMATED INVESTMENT VALUE: $${finalEst}
+--------------------------------------------
+Contact directly to initiate: agmssaura@gmail.com`;
+
+        navigator.clipboard.writeText(summaryText).then(() => {
+            const originalText = copyEstBtn.innerText;
+            copyEstBtn.innerText = 'SCOPE CONFIG COPIED!';
+            copyEstBtn.classList.add('bg-gold-400/10', 'text-white');
+            setTimeout(() => {
+                copyEstBtn.innerText = originalText;
+                copyEstBtn.classList.remove('bg-gold-400/10', 'text-white');
+            }, 2500);
+        });
+    });
+
+    // Disable background canvases if the client system prefers reduced motion profiles
+    const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
+    if (prefersReducedMotion.matches) {
+        canvas.style.display = 'none';
+    }
+</script>
+
+</body>
+</html>

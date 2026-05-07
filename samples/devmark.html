@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DevMark — Personal Brand</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        * { font-family: 'Inter', sans-serif; }
+        .mono { font-family: 'JetBrains Mono', monospace; }
+    </style>
+</head>
+<body class="bg-zinc-50 text-zinc-900">
+
+<nav class="fixed top-0 w-full bg-zinc-50/90 backdrop-blur border-b border-zinc-200 z-50">
+    <div class="max-w-4xl mx-auto px-6 py-5 flex justify-between items-center">
+        <div class="mono text-sm font-medium">~/devmark</div>
+        <div class="hidden md:flex gap-8 text-sm">
+            <a href="#" class="hover:text-rose-600">Writing</a>
+            <a href="#" class="hover:text-rose-600">Projects</a>
+            <a href="#" class="hover:text-rose-600">Newsletter</a>
+            <a href="#" class="hover:text-rose-600">Contact</a>
+        </div>
+    </div>
+</nav>
+
+<section class="pt-32 pb-20 px-6">
+    <div class="max-w-3xl mx-auto">
+        <div class="flex items-center gap-4 mb-8">
+            <div class="w-16 h-16 rounded-full bg-gradient-to-br from-rose-400 to-orange-400"></div>
+            <div>
+                <div class="font-bold text-lg">Mark Devon</div>
+                <div class="text-sm text-zinc-500">Software Engineer · Writer · Builder</div>
+            </div>
+        </div>
+        <h1 class="text-5xl md:text-6xl font-bold tracking-tight leading-tight mb-6">
+            Hey, I'm Mark — I write about <span class="text-rose-600">code</span>, <span class="text-orange-500">craft</span>, and the joy of building.
+        </h1>
+        <p class="text-lg text-zinc-600 leading-relaxed mb-8">Engineer at a small startup. Currently exploring the intersection of AI and developer tools. I share what I learn through essays and side projects.</p>
+        <div class="flex gap-3">
+            <a href="#" class="bg-zinc-900 text-white px-6 py-3 rounded-lg text-sm font-medium">Read the Newsletter</a>
+            <a href="#" class="border border-zinc-300 px-6 py-3 rounded-lg text-sm font-medium">View Projects</a>
+        </div>
+    </div>
+</section>
+
+<section class="px-6 py-16 border-t border-zinc-200">
+    <div class="max-w-3xl mx-auto">
+        <div class="flex justify-between items-baseline mb-10">
+            <h2 class="text-2xl font-bold">Recent Writing</h2>
+            <a href="#" class="text-sm text-rose-600 hover:underline">View all →</a>
+        </div>
+        <div class="space-y-8">
+            <a href="#" class="block group">
+                <div class="text-xs mono text-zinc-500 mb-2">2025-01-12 · 8 MIN READ</div>
+                <h3 class="text-xl font-semibold group-hover:text-rose-600 transition mb-2">The quiet art of writing simple code</h3>
+                <p class="text-zinc-600">Why simplicity is the hardest skill to master, and how I've learned to embrace it after 8 years of building software.</p>
+            </a>
+            <a href="#" class="block group">
+                <div class="text-xs mono text-zinc-500 mb-2">2024-12-28 · 12 MIN READ</div>
+                <h3 class="text-xl font-semibold group-hover:text-rose-600 transition mb-2">A year of building in public</h3>
+                <p class="text-zinc-600">Lessons from shipping 12 side projects in 12 months — what worked, what didn't, and what I'd do differently.</p>
+            </a>
+            <a href="#" class="block group">
+                <div class="text-xs mono text-zinc-500 mb-2">2024-12-15 · 6 MIN READ</div>
+                <h3 class="text-xl font-semibold group-hover:text-rose-600 transition mb-2">Why I switched from VSCode to Neovim</h3>
+                <p class="text-zinc-600">A practical breakdown of my workflow shift and the tradeoffs I've experienced after 3 months.</p>
+            </a>
+        </div>
+    </div>
+</section>
+
+<section class="px-6 py-16 border-t border-zinc-200">
+    <div class="max-w-3xl mx-auto">
+        <h2 class="text-2xl font-bold mb-10">Projects</h2>
+        <div class="grid md:grid-cols-2 gap-5">
+            <a href="#" class="block p-6 border border-zinc-200 rounded-xl hover:border-rose-400 transition">
+                <div class="mono text-xs text-zinc-500 mb-3">/ open source</div>
+                <h3 class="font-semibold mb-2">cli-notes</h3>
+                <p class="text-sm text-zinc-600">A minimalist note-taking CLI in Rust. 4.2k stars on GitHub.</p>
+            </a>
+            <a href="#" class="block p-6 border border-zinc-200 rounded-xl hover:border-rose-400 transition">
+                <div class="mono text-xs text-zinc-500 mb-3">/ side project</div>
+                <h3 class="font-semibold mb-2">ReadLater</h3>
+                <p class="text-sm text-zinc-600">A read-it-later app focused on quiet, distraction-free reading.</p>
+            </a>
+        </div>
+    </div>
+</section>
+
+<section class="px-6 py-20 border-t border-zinc-200 bg-gradient-to-br from-rose-50 to-orange-50">
+    <div class="max-w-2xl mx-auto text-center">
+        <h2 class="text-3xl md:text-4xl font-bold mb-4">Subscribe to the Newsletter</h2>
+        <p class="text-zinc-600 mb-8">A weekly essay on code, craft, and creativity. Free, no spam.</p>
+        <div class="flex gap-3 max-w-md mx-auto">
+            <input type="email" placeholder="your@email.com" class="flex-1 bg-white border border-zinc-300 rounded-lg px-4 py-3 text-sm">
+            <button class="bg-zinc-900 text-white px-6 py-3 rounded-lg text-sm font-semibold">Subscribe</button>
+        </div>
+        <p class="mt-4 text-xs text-zinc-500">Join 8,200+ developers</p>
+    </div>
+</section>
+
+<footer class="border-t border-zinc-200 py-8 text-center text-sm text-zinc-500">
+    DevMark Sample · Designed by AGMSS
+</footer>
+
+</body>
+</html>

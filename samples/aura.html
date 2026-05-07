@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AURA-1 // Spatial Interface Showcase</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@300;400;500&display=swap" rel="stylesheet">
+    <style>
+        body { margin: 0; overflow: hidden; background: #000; font-family: 'Cormorant Garamond', serif; }
+        #webgl { position: absolute; top: 0; left: 0; width: 100%; height: 100%; }
+        .overlay { position: absolute; top: 20px; left: 20px; color: #c9a96e; font-size: 14px; z-index: 10; }
+        .title { position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); color: #c9a96e; font-size: 48px; font-weight: 300; text-align: center; pointer-events: none; z-index: 10; }
+        .back { position: absolute; bottom: 30px; right: 30px; color: #c9a96e; font-size: 12px; text-decoration: underline; cursor: pointer; z-index: 10; }
+    </style>
+</head>
+<body>
+    <div id="webgl"></div>
+    
+    <div class="overlay">AGMSS Labs // 2025</div>
+    <div class="title">AURA-1<br><span style="font-size: 18px; opacity: 0.6;">Spatial Core Interface</span></div>
+    <div class="back" onclick="history.back()">← Back to Portfolio</div>
+
+    <script>
+        const container = document.getElementById('webgl');
+        const scene = new THREE.Scene();
+        const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
+        const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
+        renderer.setSize(window.innerWidth, window.innerHeight);
+        renderer.setPixelRatio(window.devicePixelRatio);
+        container.appendChild(renderer.domElement);
+
+        // Torus Knot (Elite 3D Shape)
+        const geometry = new THREE.TorusKnotGeometry(8, 2.5, 128, 16);
+        const material = new THREE.MeshBasicMaterial({
+            color: 0xc9a96e,
+            wireframe: true,
+            transparent: true,
+            opacity: 0.3
+        });
+        const torusKnot = new THREE.Mesh(geometry, material);
+        scene.add(torusKnot);
+
+        // Ambient glow ring
+        const ringGeometry = new THREE.RingGeometry(20, 20.5, 64);
+        const ringMaterial = new THREE.MeshBasicMaterial({
+            color: 0xc9a96e,
+            side: THREE.DoubleSide,
+            transparent: true,
+            opacity: 0.08
+        });
+        const ring = new THREE.Mesh(ringGeometry, ringMaterial);
+        ring.rotation.x = Math.PI / 2;
+        scene.add(ring);
+
+        camera.position.z = 35;
+
+        // Mouse interaction
+        let mouseX = 0, mouseY = 0;
+        document.addEventListener('mousemove', (e) => {
+            mouseX = (e.clientX - window.innerWidth / 2) * 0.02;
+            mouseY = (e.clientY - window.innerHeight / 2) * 0.02;
+        });
+
+        function animate() {
+            requestAnimationFrame(animate);
+            
+            torusKnot.rotation.x += 0.005;
+            torusKnot.rotation.y += 0.01;
+            ring.rotation.z -= 0.002;
+
+            torusKnot.rotation.x += mouseY * 0.0001;
+            torusKnot.rotation.y += mouseX * 0.0001;
+
+            renderer.render(scene, camera);
+        }
+        animate();
+
+        window.addEventListener('resize', () => {
+            camera.aspect = window.innerWidth / window.innerHeight;
+            camera.updateProjectionMatrix();
+            renderer.setSize(window.innerWidth, window.innerHeight);
+        });
+    </script>
+</body>
+</html>

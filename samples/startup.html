@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>LaunchPad AI — Build Smarter, Faster</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        * { font-family: 'Inter', sans-serif; }
+        .gradient-text {
+            background: linear-gradient(135deg, #10b981, #06b6d4, #8b5cf6);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+    </style>
+</head>
+<body class="bg-[#030712] text-white">
+
+<nav class="fixed top-0 w-full z-50 backdrop-blur-xl bg-[#030712]/80 border-b border-white/5">
+    <div class="max-w-7xl mx-auto px-6 py-4 flex justify-between items-center">
+        <div class="flex items-center gap-2">
+            <div class="w-9 h-9 rounded-xl bg-gradient-to-br from-emerald-400 to-cyan-500 flex items-center justify-center font-black text-black">L</div>
+            <span class="font-bold text-lg">LaunchPad <span class="text-emerald-400">AI</span></span>
+        </div>
+        <div class="hidden md:flex gap-8 text-sm text-gray-400">
+            <a href="#" class="hover:text-white">Product</a>
+            <a href="#" class="hover:text-white">Solutions</a>
+            <a href="#" class="hover:text-white">Pricing</a>
+            <a href="#" class="hover:text-white">Customers</a>
+        </div>
+        <div class="flex items-center gap-3">
+            <a href="#" class="text-sm text-gray-400 hover:text-white">Login</a>
+            <a href="#" class="text-sm bg-white text-black px-5 py-2 rounded-lg font-semibold">Get Started</a>
+        </div>
+    </div>
+</nav>
+
+<section class="pt-40 pb-24 px-6 text-center relative overflow-hidden">
+    <div class="absolute top-1/3 left-1/2 -translate-x-1/2 w-[600px] h-[600px] bg-emerald-500/10 rounded-full blur-[150px]"></div>
+    <div class="relative max-w-4xl mx-auto">
+        <div class="inline-flex items-center gap-2 bg-white/5 border border-white/10 rounded-full px-4 py-1.5 mb-8 text-xs">
+            <span class="text-emerald-400">●</span> Backed by Y Combinator
+        </div>
+        <h1 class="text-5xl md:text-7xl font-extrabold tracking-tight leading-[1.05] mb-6">
+            Ship products<br>
+            <span class="gradient-text">10x faster</span> with AI.
+        </h1>
+        <p class="text-xl text-gray-400 max-w-2xl mx-auto mb-10">The all-in-one AI platform that helps startups build, launch, and scale without the engineering overhead.</p>
+        <div class="flex flex-col sm:flex-row justify-center gap-4">
+            <a href="#" class="bg-gradient-to-r from-emerald-400 to-cyan-500 text-black font-bold px-8 py-4 rounded-xl">Start Building Free</a>
+            <a href="#" class="border border-white/15 hover:bg-white/5 px-8 py-4 rounded-xl font-semibold">Watch Demo →</a>
+        </div>
+        <div class="mt-12 text-xs text-gray-500 uppercase tracking-widest">Trusted by 10,000+ teams</div>
+        <div class="flex justify-center gap-12 mt-6 text-gray-600 font-bold text-lg">
+            <span>STRIPE</span> <span>NOTION</span> <span>LINEAR</span> <span>VERCEL</span>
+        </div>
+    </div>
+</section>
+
+<section class="px-6 py-20">
+    <div class="max-w-6xl mx-auto">
+        <div class="text-center mb-16">
+            <div class="text-xs text-emerald-400 uppercase tracking-widest mb-3">Features</div>
+            <h2 class="text-4xl md:text-5xl font-bold">Everything you need to launch.</h2>
+        </div>
+        <div class="grid md:grid-cols-3 gap-6">
+            <div class="bg-white/[0.03] border border-white/5 rounded-2xl p-8 hover:bg-white/[0.05] transition">
+                <div class="w-12 h-12 rounded-xl bg-emerald-500/10 border border-emerald-500/20 mb-5 flex items-center justify-center text-2xl">⚡</div>
+                <h3 class="text-xl font-bold mb-3">AI Code Generation</h3>
+                <p class="text-gray-400">Generate production-ready code in seconds with advanced AI models.</p>
+            </div>
+            <div class="bg-white/[0.03] border border-white/5 rounded-2xl p-8 hover:bg-white/[0.05] transition">
+                <div class="w-12 h-12 rounded-xl bg-cyan-500/10 border border-cyan-500/20 mb-5 flex items-center justify-center text-2xl">🚀</div>
+                <h3 class="text-xl font-bold mb-3">One-Click Deploy</h3>
+                <p class="text-gray-400">Push to production with zero configuration. Auto-scaling included.</p>
+            </div>
+            <div class="bg-white/[0.03] border border-white/5 rounded-2xl p-8 hover:bg-white/[0.05] transition">
+                <div class="w-12 h-12 rounded-xl bg-purple-500/10 border border-purple-500/20 mb-5 flex items-center justify-center text-2xl">🧠</div>
+                <h3 class="text-xl font-bold mb-3">Smart Analytics</h3>
+                <p class="text-gray-400">Real-time insights powered by machine learning algorithms.</p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section class="px-6 py-20">
+    <div class="max-w-5xl mx-auto bg-gradient-to-br from-emerald-500/10 to-cyan-500/10 border border-emerald-500/20 rounded-3xl p-12 text-center">
+        <h2 class="text-4xl md:text-5xl font-bold mb-4">Ready to launch?</h2>
+        <p class="text-gray-400 mb-8 text-lg">Join thousands of founders already shipping with LaunchPad AI.</p>
+        <a href="#" class="inline-block bg-white text-black font-bold px-10 py-4 rounded-xl">Start Free 14-Day Trial</a>
+    </div>
+</section>
+
+<footer class="border-t border-white/5 py-8 text-center text-sm text-gray-500">
+    LaunchPad AI Sample · Designed by AGMSS
+</footer>
+
+</body>
+</html>
