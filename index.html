@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>AGMSS — Premium Web Architect</title>
+    <title><meta property="og:image" content="https://yourusername.github.io/your-repo-name/preview.png">AGMSS — Premium Web Architect</title>
 
     <!-- Preconnect to improve font loading performance -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -1140,6 +1140,63 @@ Contact directly to initiate: agmssaura@gmail.com`;
     if (prefersReducedMotion.matches) {
         canvas.style.display = 'none';
     }
+        // === ESTIMATE COPY SUMMARY GENERATOR + WEB3FORMS ===
+    copyEstBtn.addEventListener('click', async () => {
+        const archetypeText = projectSelect.options[projectSelect.selectedIndex].text;
+        const pagesText = pageSlider.value;
+        const backendStatus = backendToggle.checked ? "Yes (+ $200)" : "No";
+        const motionStatus = motionToggle.checked ? "Yes (+ $150)" : "No";
+        const seoStatus = seoToggle.checked ? "Yes (+ $80)" : "No";
+        const expressStatus = speedToggle.checked ? "Yes (+ 35%)" : "No";
+        const finalEst = priceVal.innerText;
+
+        const summaryText = 
+`AGMSS — PROJECT DESIGN SCOPE SUMMARY
+--------------------------------------------
+• Project Archetype: ${archetypeText}
+• Total Structural Scope: ${pagesText} Page(s)
+• Backend Functionality: ${backendStatus}
+• Motion / Fluid Logic: ${motionStatus}
+• Production SEO Setup: ${seoStatus}
+• Urgent Express Delivery: ${expressStatus}
+--------------------------------------------
+ESTIMATED INVESTMENT VALUE: $${finalEst}
+--------------------------------------------
+Contact directly to initiate: agmssaura@gmail.com`;
+
+        // 1. Copy to clipboard (Original functionality)
+        navigator.clipboard.writeText(summaryText).then(() => {
+            const originalText = copyEstBtn.innerText;
+            copyEstBtn.innerText = 'SCOPE CONFIG COPIED!';
+            copyEstBtn.classList.add('bg-gold-400/10', 'text-white');
+            setTimeout(() => {
+                copyEstBtn.innerText = originalText;
+                copyEstBtn.classList.remove('bg-gold-400/10', 'text-white');
+            }, 2500);
+        });
+
+        // 2. Send to your email silently via Web3Forms
+        try {
+            await fetch('https://api.web3forms.com/submit', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
+                body: JSON.stringify({
+                    access_key: '5cfd0c35-e087-4855-95fb-https://www.notion.so/Security-First-Vibe-Coding-Rules-359ce6c17baf80cfa6fcc72488223688', // <-- PASTE YOUR WEB3FORMS KEY HERE
+                    subject: '📊 New Project Estimate from AGMSS Portfolio',
+                    from_name: 'AGMSS Portfolio Estimator',
+                    'Project Type': archetypeText,
+                    'Pages': pagesText,
+                    'Backend': backendStatus,
+                    'Motion': motionStatus,
+                    'SEO': seoStatus,
+                    'Express Delivery': expressStatus,
+                    'Estimated Total': '$' + finalEst
+                })
+            });
+        } catch (err) {
+            console.warn('Email notification failed:', err);
+        }
+    });
 </script>
 
 </body>
